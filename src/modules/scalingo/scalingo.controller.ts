@@ -6,8 +6,10 @@ function buildScalingoController() {
         createApp,
     };
 
-    function createApp(params: { body: {}; urlParams: {} }) {
-        return scalingoService.createApp();
+    function createApp(params: {
+        body: { appName: string; shouldBeSecNumCloud: boolean; collaboratorToInvite: string };
+    }) {
+        return scalingoService.createApp(params.body);
     }
 }
 
