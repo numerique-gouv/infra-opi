@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import Joi from 'joi';
+import { assertIsRequestAuthorized } from './assertIsRequestAuthorized';
 
 export { buildController };
 
@@ -12,6 +13,8 @@ function buildController<paramsT extends Record<string, string>, bodyT>(
 ) {
     return async (req: Request, res: Response) => {
         console.log(`${req.method} ${req.originalUrl}`);
+
+        assertIsRequestAuthorized(req);
 
         if (options?.schema) {
             const { error } = options.schema.validate(req.body);
