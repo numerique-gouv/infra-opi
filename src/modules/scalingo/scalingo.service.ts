@@ -15,28 +15,34 @@ function buildScalingoService() {
     }) {
         const bearerToken = await requestBearerToken();
         const APP_CREATION_URL = getSpecificRegionUrl('/v1/apps', body.shouldBeSecNumCloud);
-        await axios
-            .post(
+        try {
+            await axios.post(
                 APP_CREATION_URL,
                 { app: { name: body.appName } },
                 { headers: { Authorization: `Bearer ${bearerToken}` } },
-            )
-            .then((response) => response.data);
+            );
+        } catch (error: any) {
+            console.log(error?.response?.data?.errors);
+            throw new Error(`Application creation failed. Please retry later`);
+        }
 
         const COLLABORATOR_INVITATION_URL = getSpecificRegionUrl(
             `/v1/apps/${body.appName}/collaborators`,
             body.shouldBeSecNumCloud,
         );
 
-        await axios
-            .post(
+        try {
+            await axios.post(
                 COLLABORATOR_INVITATION_URL,
                 {
                     collaborator: { email: body.collaboratorToInvite },
                 },
                 { headers: { Authorization: `Bearer ${bearerToken}` } },
-            )
-            .then(({ data }) => data);
+            );
+        } catch (error: any) {
+            console.log(error?.response?.data?.errors);
+            throw new Error(`Collaborator invitation failed. Please retry later`);
+        }
 
         return true;
     }
