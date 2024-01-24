@@ -20,6 +20,21 @@ async function buildRouter() {
         }),
     );
 
+    router.post(
+        '/scalingo/apps/rename',
+        buildController(scalingoController.renameApp, {
+            schema: Joi.object({
+                newAppName: Joi.string()
+                    .regex(/^[a-z][a-z\-]{4,46}[a-z]$/)
+                    .required(),
+                previousAppName: Joi.string()
+                    .regex(/^[a-z][a-z\-]{4,46}[a-z]$/)
+                    .required(),
+                isSecNumCloud: Joi.boolean().required(),
+            }),
+        }),
+    );
+
     return router;
 }
 
