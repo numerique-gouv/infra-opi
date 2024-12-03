@@ -44,6 +44,24 @@ function buildScalingoService() {
             throw new Error(`Collaborator invitation failed. Please retry later`);
         }
 
+        const CONTAINER_SCALE_URL = getSpecificRegionUrl(
+            `/v1/apps/${body.appName}/scale`,
+            body.shouldBeSecNumCloud,
+        );
+
+        try {
+            await axios.post(
+                CONTAINER_SCALE_URL,
+                {
+                    containers: [{ name: 'web', amount: 1, size: 'S' }],
+                },
+                { headers: { Authorization: `Bearer ${bearerToken}` } },
+            );
+        } catch (error: any) {
+            console.log(error?.response?.data?.errors);
+            throw new Error(`Container scaling failed. Please retry later`);
+        }
+
         return true;
     }
 
