@@ -6,7 +6,29 @@ const SCALINGO_AUTH_BASE_URL = 'https://auth.scalingo.com/v1';
 function buildScalingoService() {
     return {
         createApp,
+        renameApp,
     };
+
+    async function renameApp(body: {
+        isSecNumCloud: boolean;
+        previousAppName: string;
+        newAppName: string;
+    }) {
+        const bearerToken = await requestBearerToken();
+        const urlSuffix = `/v1/apps/${body.previousAppName}/rename`;
+        const APP_RENAMING_URL = getSpecificRegionUrl(urlSuffix, body.isSecNumCloud);
+        try {
+            await axios.post(
+                APP_RENAMING_URL,
+                { current_name: body.previousAppName, new_name: body.newAppName },
+                { headers: { Authorization: `Bearer ${bearerToken}` } },
+            );
+        } catch (error: any) {
+            console.log(error?.response?.data?.errors);
+            throw new Error(`Application creation failed. Please retry later`);
+        }
+        return true;
+    }
 
     async function createApp(body: {
         appName: string;
