@@ -13,9 +13,9 @@
     "dependencies": {
         "@types/express": "^4.17.18",
         "axios": "^1.6.2",
-        "body-parser": "^1.20.2",
+        "body-parser": "^1.20.3",
         "dotenv": "^16.3.1",
-        "express": "^4.19.2",
+        "express": "^4.21.1",
         "http-status": "^1.7.0",
         "joi": "^17.10.2"
     }
