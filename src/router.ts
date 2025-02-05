@@ -12,7 +12,7 @@ async function buildRouter() {
         buildController(scalingoController.createApp, {
             schema: Joi.object({
                 appName: Joi.string()
-                    .regex(/^[a-z][a-z\-]{4,46}[a-z]$/)
+                    .regex(/^[a-z][a-z\-0-9]{4,46}[a-z]$/)
                     .required(),
                 shouldBeSecNumCloud: Joi.boolean().required(),
                 collaboratorToInvite: Joi.string().email(),
